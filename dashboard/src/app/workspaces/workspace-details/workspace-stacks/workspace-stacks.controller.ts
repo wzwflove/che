@@ -35,7 +35,14 @@ export class WorkspaceStacksController {
   isCustomStack: boolean = false;
   selectSourceOption: string;
 
+  tabName: string;
+  environmentName: string;
   workspaceName: string;
+  customStackRecipe: {
+    type: string,
+    content: string,
+    location: string
+  };
   workspaceStackOnChange: Function;
 
   /**
@@ -61,25 +68,20 @@ export class WorkspaceStacksController {
         this.cheStackLibrarySelecter(null);
       }
     });
-  }
 
-  /**
-   * Callback when tab has been change.
-   *
-   * @param tabName {string} the select tab name
-   */
-  setStackTab(tabName: string): void {
-    if (tabName !== 'stack-import' && tabName !== 'stack-authoring') {
-      return;
-    }
-
-    if (tabName === 'stack-import') {
-      this.recipeScript = null;
-    } else {
-      this.recipeUrl = null;
-    }
-    this.cheStackLibrarySelecter(null);
-    this.isCustomStack = true;
+    $scope.$watch(() => { return this.customStackRecipe; }, () => {
+      if (!this.customStackRecipe) {
+        return;
+      }
+      this.recipeFormat = this.customStackRecipe.type;
+      if (this.customStackRecipe.location) {
+        this.recipeUrl = this.customStackRecipe.location;
+        this.tabName = 'stack-import';
+      } else {
+        this.recipeScript = this.customStackRecipe.content;
+        this.tabName = 'stack-authoring';
+      }
+    }, true);
   }
 
   /**
@@ -92,6 +94,8 @@ export class WorkspaceStacksController {
       this.isCustomStack = false;
       this.recipeUrl = null;
       this.recipeScript = null;
+    } else {
+      this.isCustomStack = true;
     }
     this.stack = stack;
 
@@ -119,9 +123,9 @@ export class WorkspaceStacksController {
       let machines    = this.composeEnvironmentManager.getMachines({recipe: source}),
           environment = this.composeEnvironmentManager.getEnvironment({recipe: source}, machines);
       stackWorkspaceConfig = {
-        defaultEnv: this.workspaceName,
+        defaultEnv: this.environmentName,
         environments: {
-          [this.workspaceName]: environment
+          [this.environmentName]: environment
         }
       };
     }
