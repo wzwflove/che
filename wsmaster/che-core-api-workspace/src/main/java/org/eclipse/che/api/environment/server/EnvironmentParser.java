@@ -49,8 +49,8 @@ public class EnvironmentParser {
     protected static final String SERVER_CONF_LABEL_PROTOCOL_SUFFIX = ":protocol";
     protected static final String SERVER_CONF_LABEL_PATH_SUFFIX     = ":path";
 
-    private final  Map<String, EnvironmentFileParser> composeFileParsers;
-    private final RecipeDownloader                    recipeDownloader;
+    private final Map<String, EnvironmentFileParser> composeFileParsers;
+    private final RecipeDownloader                   recipeDownloader;
 
     @Inject
     public EnvironmentParser(@Named("machine.docker.compose.parsers") Map<String, EnvironmentFileParser> composeFileParsers,
@@ -155,7 +155,8 @@ public class EnvironmentParser {
         });
     }
 
-    private CheServicesEnvironmentImpl parseCompose(EnvironmentFileParser environmentFileParser, EnvironmentRecipe recipe) throws ServerException {
+    private CheServicesEnvironmentImpl parseCompose(EnvironmentFileParser environmentFileParser, EnvironmentRecipe recipe)
+            throws ServerException {
         String recipeContent = getContentOfRecipe(recipe);
 
         ComposeEnvironment composeEnvironment = environmentFileParser.parse(recipeContent, recipe.getContentType());
