@@ -45,7 +45,7 @@ import org.eclipse.che.api.workspace.server.model.impl.ServerConf2Impl;
 import org.eclipse.che.commons.env.EnvironmentContext;
 import org.eclipse.che.commons.lang.Size;
 import org.eclipse.che.commons.subject.SubjectImpl;
-import org.eclipse.che.compose.parser.yaml.ComposeFileParser;
+import org.eclipse.che.plugin.docker.compose.yaml.ComposeFileParser;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mock;

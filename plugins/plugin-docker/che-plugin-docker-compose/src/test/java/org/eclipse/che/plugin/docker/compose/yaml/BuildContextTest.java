@@ -8,10 +8,10 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.che.compose.parser.yaml;
+package org.eclipse.che.plugin.docker.compose.yaml;
 
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.compose.parser.ComposeEnvironment;
+import org.eclipse.che.plugin.docker.compose.ComposeEnvironment;
 import org.testng.annotations.Test;
 
 import java.util.Collections;

@@ -21,9 +21,9 @@ import org.eclipse.che.api.environment.server.model.CheServiceBuildContextImpl;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
 import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
 import org.eclipse.che.api.machine.server.util.RecipeDownloader;
-import org.eclipse.che.compose.parser.ComposeEnvironment;
-import org.eclipse.che.compose.parser.EnvironmentFileParser;
-import org.eclipse.che.compose.parser.ComposeServiceImpl;
+import org.eclipse.che.plugin.docker.compose.ComposeEnvironment;
+import org.eclipse.che.plugin.docker.compose.EnvironmentFileParser;
+import org.eclipse.che.plugin.docker.compose.ComposeServiceImpl;
 
 import javax.inject.Inject;
 import javax.inject.Named;

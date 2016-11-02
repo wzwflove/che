@@ -8,7 +8,7 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.che.compose.parser;
+package org.eclipse.che.plugin.docker.compose;
 
 import java.util.HashMap;
 import java.util.Map;

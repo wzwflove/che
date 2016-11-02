@@ -8,13 +8,13 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.che.compose.parser;
+package org.eclipse.che.plugin.docker.compose;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.name.Names;
 
-import org.eclipse.che.compose.parser.yaml.ComposeFileParser;
+import org.eclipse.che.plugin.docker.compose.yaml.ComposeFileParser;
 
 /**
  * @author Alexander Andrienko

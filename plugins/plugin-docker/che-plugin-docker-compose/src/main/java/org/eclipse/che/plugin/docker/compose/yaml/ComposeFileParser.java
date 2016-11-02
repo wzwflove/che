@@ -8,15 +8,15 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.che.compose.parser.yaml;
+package org.eclipse.che.plugin.docker.compose.yaml;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.compose.parser.ComposeEnvironment;
-import org.eclipse.che.compose.parser.EnvironmentFileParser;
+import org.eclipse.che.plugin.docker.compose.ComposeEnvironment;
+import org.eclipse.che.plugin.docker.compose.EnvironmentFileParser;
 
 import java.io.IOException;
 
