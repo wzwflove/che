@@ -60,21 +60,22 @@ import java.util.Objects;
         }
 )
 @EntityListeners(UserEntityListener.class)
-@Table(indexes = {@Index(columnList = "email", unique = true)})
+@Table(name = "usr")
 public class UserImpl implements User {
     public static final String PERSONAL_ACCOUNT = "personal";
 
     @Id
+    @Column(name = "id")
     private String id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, name = "account_id")
     private AccountImpl account;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "email")
     private String email;
 
-    @Basic
+    @Column(name = "password")
     private String password;
 
     @ElementCollection

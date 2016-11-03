@@ -161,7 +161,7 @@
 
 
         <!-- Database connection pool
-        See here for more details on commons-dbcp versus tomcat-jdbc:
+        See here for more details on commons-dbcp versus tomcat-db:
         http://blog.ippon.fr/2013/03/13/improving-the-performance-of-the-spring-petclinic-sample-application-part-3-of-5/
     -->
         <dependency>

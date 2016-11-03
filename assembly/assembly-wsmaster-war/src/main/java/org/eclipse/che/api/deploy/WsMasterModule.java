@@ -16,12 +16,12 @@ import com.google.inject.name.Names;
 import com.google.inject.persist.jpa.JpaPersistModule;
 
 import org.eclipse.che.api.agent.server.launcher.AgentLauncher;
-import org.eclipse.che.api.core.jdbc.jpa.guice.JpaInitializer;
+import org.eclipse.che.core.db.jpa.JpaInitializer;
 import org.eclipse.che.api.core.rest.CheJsonProvider;
 import org.eclipse.che.api.core.rest.MessageBodyAdapter;
 import org.eclipse.che.api.core.rest.MessageBodyAdapterInterceptor;
 import org.eclipse.che.account.api.AccountModule;
-import org.eclipse.che.api.core.jdbc.jpa.eclipselink.EntityListenerInjectionManagerInitializer;
+import org.eclipse.che.core.db.jpa.eclipselink.EntityListenerInjectionManagerInitializer;
 import org.eclipse.che.api.machine.server.jpa.MachineJpaModule;
 import org.eclipse.che.api.machine.shared.Constants;
 import org.eclipse.che.api.workspace.server.WorkspaceConfigMessageBodyAdapter;

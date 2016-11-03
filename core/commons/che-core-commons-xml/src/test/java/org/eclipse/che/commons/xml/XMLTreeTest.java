@@ -1494,7 +1494,7 @@ public class XMLTreeTest {
                                           "<![CDATA[\n" +
                                           "select u.login as user, u.password as password, case when u.status = 'ok' " +
                                           "then 1 else 0 end as enabled \n" +
-                                          "from ${jdbc.default.schema}.USER u \n" +
+                                          "from ${db.default.schema}.USER u \n" +
                                           "where u.login = ? and u.status = 'ok'" +
                                           "]]>\n\n\n\n" +
                                           "</security.query.authen>\n" +
@@ -1502,7 +1502,7 @@ public class XMLTreeTest {
                                           "<![CDATA[\n" +
                                           "select u.login as user, u.password as password, case when u.status = 'ok' " +
                                           "then 1 else 0 end as enabled \n" +
-                                          "from ${jdbc.default.schema}.USER u \n" +
+                                          "from ${db.default.schema}.USER u \n" +
                                           "where u.login = ? and u.status = 'ok'" +
                                           "]]>\na" +
                                           "</security.query.authorize>\n" +

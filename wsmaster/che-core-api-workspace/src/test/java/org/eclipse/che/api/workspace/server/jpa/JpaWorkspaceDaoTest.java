@@ -14,7 +14,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import org.eclipse.che.account.spi.AccountImpl;
-import org.eclipse.che.api.core.jdbc.jpa.DuplicateKeyException;
+import org.eclipse.che.core.db.jpa.DuplicateKeyException;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceImpl;
 import org.testng.annotations.AfterMethod;

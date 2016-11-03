@@ -14,8 +14,8 @@ import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.persist.jpa.JpaPersistModule;
 
-import org.eclipse.che.api.core.jdbc.jpa.eclipselink.EntityListenerInjectionManagerInitializer;
-import org.eclipse.che.api.core.jdbc.jpa.guice.JpaInitializer;
+import org.eclipse.che.core.db.jpa.eclipselink.EntityListenerInjectionManagerInitializer;
+import org.eclipse.che.core.db.jpa.JpaInitializer;
 import org.eclipse.che.api.factory.server.model.impl.FactoryImpl;
 import org.eclipse.che.api.factory.server.spi.FactoryDao;
 import org.eclipse.che.api.user.server.jpa.JpaProfileDao;

@@ -12,7 +12,6 @@ package org.eclipse.che.api.workspace.server.model.impl;
 
 import org.eclipse.che.account.shared.model.Account;
 import org.eclipse.che.account.spi.AccountImpl;
-import org.eclipse.che.api.core.jdbc.jpa.eclipselink.DescriptorEventAdapter;
 import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.core.model.workspace.WorkspaceConfig;
 import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
@@ -21,6 +20,7 @@ import org.eclipse.che.api.machine.server.model.impl.SnapshotImpl;
 import org.eclipse.che.api.workspace.server.jpa.WorkspaceEntityListener;
 import org.eclipse.che.commons.lang.NameGenerator;
 import org.eclipse.persistence.descriptors.DescriptorEvent;
+import org.eclipse.persistence.descriptors.DescriptorEventAdapter;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;

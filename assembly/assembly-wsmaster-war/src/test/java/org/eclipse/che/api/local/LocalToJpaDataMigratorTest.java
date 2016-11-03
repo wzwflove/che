@@ -23,8 +23,8 @@ import com.google.inject.Stage;
 import com.google.inject.name.Names;
 import com.google.inject.persist.jpa.JpaPersistModule;
 
-import org.eclipse.che.api.core.jdbc.jpa.eclipselink.EntityListenerInjectionManagerInitializer;
-import org.eclipse.che.api.core.jdbc.jpa.guice.JpaInitializer;
+import org.eclipse.che.core.db.jpa.eclipselink.EntityListenerInjectionManagerInitializer;
+import org.eclipse.che.core.db.jpa.JpaInitializer;
 import org.eclipse.che.api.local.storage.LocalStorageFactory;
 import org.eclipse.che.api.local.storage.stack.StackLocalStorage;
 import org.eclipse.che.api.machine.server.jpa.MachineJpaModule;

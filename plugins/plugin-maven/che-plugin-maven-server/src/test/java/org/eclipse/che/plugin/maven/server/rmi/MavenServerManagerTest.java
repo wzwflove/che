@@ -114,7 +114,7 @@ public class MavenServerManagerTest {
                                             Collections.emptyList(),
                                             Collections.emptyList());
         assertThat(effectivePom).isNotNull().isNotEmpty().contains("<!-- Effective POM for project")
-                                .contains("'org.eclipse.che.parent:maven-parent-pom:pom:4.0.0-M6-SNAPSHOT'");
+                                .contains("'org.eclipse.che.parent:maven-parent-pom:pom:4.0.5.0.0-M7-SNAPSHOT'");
     }
 
     @Test
