@@ -13,29 +13,23 @@ package org.eclipse.che.api.git.shared;
 import org.eclipse.che.dto.shared.DTO;
 
 /**
- * Request to create new tag.
+ * Request to get list of remotes. If {@link #remote} is specified then info about this remote only given.
  *
  * @author andrew00x
  */
 @DTO
-public interface TagCreateRequest extends GitRequest {
-    /** @return name of tag to create */
-    String getName();
+public interface RemoteListRequest extends GitRequest {
+    /** @return if <code>true</code> show remote url and name otherwise show remote name only */
+    boolean isVerbose();
     
-    void setName(String name);
+    void setVerbose(boolean isVerbose);
+    
+    RemoteListRequest withVerbose(boolean verbose);
 
-    /** @return commit to make tag. If <code>null</code> then HEAD is used */
-    String getCommit();
+    /** @return remote name */
+    String getRemote();
     
-    void setCommit(String commit);
-
-    /** @return message for tag */
-    String getMessage();
+    RemoteListRequest withRemote(String remote);
     
-    void setMessage(String message);
-
-    /** @return force create tag operation */
-    boolean isForce();
-    
-    void setForce(boolean isForce);
+    void setRemote(String remote);
 }

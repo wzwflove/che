@@ -13,29 +13,26 @@ package org.eclipse.che.api.git.shared;
 import org.eclipse.che.dto.shared.DTO;
 
 /**
- * Request to create new tag.
- *
  * @author andrew00x
  */
 @DTO
-public interface TagCreateRequest extends GitRequest {
-    /** @return name of tag to create */
-    String getName();
-    
-    void setName(String name);
+public interface BranchListRequest extends GitRequest {
+    /**
+     * Show both remote and local branches. <br/>
+     * Corresponds to -a option in C git.
+     */
+    public static final String LIST_ALL    = "a";
+    /**
+     * Show both remote branches. <br/>
+     * Corresponds to -r option in C git.
+     */
+    public static final String LIST_REMOTE = "r";
+    public static final String LIST_LOCAL  = null;
 
-    /** @return commit to make tag. If <code>null</code> then HEAD is used */
-    String getCommit();
+    /** @return branches list mode */
+    String getListMode();
     
-    void setCommit(String commit);
-
-    /** @return message for tag */
-    String getMessage();
+    void setListMode(String listMode);
     
-    void setMessage(String message);
-
-    /** @return force create tag operation */
-    boolean isForce();
-    
-    void setForce(boolean isForce);
+    BranchListRequest withListMode(String listMode);
 }

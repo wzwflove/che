@@ -12,30 +12,15 @@ package org.eclipse.che.api.git.shared;
 
 import org.eclipse.che.dto.shared.DTO;
 
+import java.util.Map;
+
 /**
- * Request to create new tag.
+ * Abstract request to {@link org.eclipse.che.api.git.GitConnection}.
  *
  * @author andrew00x
  */
 @DTO
-public interface TagCreateRequest extends GitRequest {
-    /** @return name of tag to create */
-    String getName();
-    
-    void setName(String name);
-
-    /** @return commit to make tag. If <code>null</code> then HEAD is used */
-    String getCommit();
-    
-    void setCommit(String commit);
-
-    /** @return message for tag */
-    String getMessage();
-    
-    void setMessage(String message);
-
-    /** @return force create tag operation */
-    boolean isForce();
-    
-    void setForce(boolean isForce);
+public interface GitRequest {
+    /** @return set of request attributes */
+    Map<String, String> getAttributes();
 }

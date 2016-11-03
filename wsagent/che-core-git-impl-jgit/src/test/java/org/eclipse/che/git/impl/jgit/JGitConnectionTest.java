@@ -13,6 +13,7 @@ package org.eclipse.che.git.impl.jgit;
 
 import org.eclipse.che.api.git.CredentialsLoader;
 import org.eclipse.che.api.git.GitUserResolver;
+import org.eclipse.che.api.git.shared.GitRequest;
 import org.eclipse.che.plugin.ssh.key.script.SshKeyProvider;
 import org.eclipse.jgit.api.TransportCommand;
 import org.eclipse.jgit.api.TransportConfigCallback;
@@ -61,23 +62,25 @@ public class JGitConnectionTest {
     private GitUserResolver   gitUserResolver;
     @Mock
     private TransportCommand  transportCommand;
+    @Mock
+    private GitRequest        request;
     @InjectMocks
     private JGitConnection    jGitConnection;
 
     @DataProvider(name = "gitUrlsWithCredentialsProvider")
     private static Object[][] gitUrlsWithCredentials() {
-        return new Object[][]{{"http://username:password@host.xz/path/to/repo.git"},
-                              {"https://username:password@host.xz/path/to/repo.git"}};
+        return new Object[][] {{"http://username:password@host.xz/path/to/repo.git"},
+                               {"https://username:password@host.xz/path/to/repo.git"}};
     }
 
     @DataProvider(name = "gitUrlsWithoutOrWrongCredentialsProvider")
     private static Object[][] gitUrlsWithoutOrWrongCredentials() {
-        return new Object[][]{{"http://host.xz/path/to/repo.git"},
-                              {"https://host.xz/path/to/repo.git"},
-                              {"http://username:@host.xz/path/to/repo.git"},
-                              {"https://username:@host.xz/path/to/repo.git"},
-                              {"http://:password@host.xz/path/to/repo.git"},
-                              {"https://:password@host.xz/path/to/repo.git"}};
+        return new Object[][] {{"http://host.xz/path/to/repo.git"},
+                               {"https://host.xz/path/to/repo.git"},
+                               {"http://username:@host.xz/path/to/repo.git"},
+                               {"https://username:@host.xz/path/to/repo.git"},
+                               {"http://:password@host.xz/path/to/repo.git"},
+                               {"https://:password@host.xz/path/to/repo.git"}};
     }
 
     @Test(dataProvider = "gitUrlsWithCredentials")
@@ -90,7 +93,7 @@ public class JGitConnectionTest {
         passwordField.setAccessible(true);
 
         //when
-        jGitConnection.executeRemoteCommand(url, transportCommand, null, null);
+        jGitConnection.executeRemoteCommand(url, transportCommand, request);
 
         //then
         verify(transportCommand).setCredentialsProvider(captor.capture());
@@ -104,7 +107,7 @@ public class JGitConnectionTest {
     @Test(dataProvider = "gitUrlsWithoutOrWrongCredentials")
     public void shouldNotSetCredentialsProviderIfUrlDoesNotContainCredentials(String url) throws Exception {
         //when
-        jGitConnection.executeRemoteCommand(url, transportCommand, null, null);
+        jGitConnection.executeRemoteCommand(url, transportCommand, request);
 
         //then
         verify(transportCommand, never()).setCredentialsProvider(any());
@@ -122,7 +125,7 @@ public class JGitConnectionTest {
         }).when(transportCommand).setTransportConfigCallback(any());
 
         //when
-        jGitConnection.executeRemoteCommand("ssh://host.xz/repo.git", transportCommand, null, null);
+        jGitConnection.executeRemoteCommand("ssh://host.xz/repo.git", transportCommand, null);
 
         //then
         verify(sshTransport).setSshSessionFactory(any());
@@ -158,7 +161,7 @@ public class JGitConnectionTest {
         }).when(transportCommand).setTransportConfigCallback(any());
 
         //when
-        jGitConnection.executeRemoteCommand("ssh://host.xz/repo.git", transportCommand, null, null);
+        jGitConnection.executeRemoteCommand("ssh://host.xz/repo.git", transportCommand, null);
 
         //then
         verifyZeroInteractions(transportHttp);

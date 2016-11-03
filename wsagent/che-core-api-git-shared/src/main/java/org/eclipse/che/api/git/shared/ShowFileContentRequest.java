@@ -13,29 +13,27 @@ package org.eclipse.che.api.git.shared;
 import org.eclipse.che.dto.shared.DTO;
 
 /**
- * Request to create new tag.
+ * Request to show content of the file from specified revision or branch
  *
- * @author andrew00x
+ * @author Igor Vinokur
  */
 @DTO
-public interface TagCreateRequest extends GitRequest {
-    /** @return name of tag to create */
-    String getName();
-    
-    void setName(String name);
+public interface ShowFileContentRequest {
+    /**
+     * File path to show
+     */
+    String getFile();
 
-    /** @return commit to make tag. If <code>null</code> then HEAD is used */
-    String getCommit();
-    
-    void setCommit(String commit);
+    void setFile(String file);
 
-    /** @return message for tag */
-    String getMessage();
-    
-    void setMessage(String message);
+    ShowFileContentRequest withFile(String file);
 
-    /** @return force create tag operation */
-    boolean isForce();
-    
-    void setForce(boolean isForce);
+    /**
+     * hash of revision or branch
+     */
+    String getVersion();
+
+    void setVersion(String version);
+
+    ShowFileContentRequest withVersion(String version);
 }

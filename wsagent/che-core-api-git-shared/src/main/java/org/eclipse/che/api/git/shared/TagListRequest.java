@@ -10,34 +10,17 @@
  *******************************************************************************/
 package org.eclipse.che.api.git.shared;
 
+import org.eclipse.che.dto.shared.DTO;
+
 /**
- * Type of git diff operation.
+ * Request to get list of available tags.
  *
- * @author Igor Vinokur
+ * @author andrew00x
  */
-public enum DiffType {
-    /** Only names of modified, added, deleted files. */
-    NAME_ONLY("--name-only"),
-    /**
-     * Names staus of modified, added, deleted files.
-     * <p/>
-     * Example:
-     * <p/>
-     * <pre>
-     * D   README.txt
-     * A   HOW-TO.txt
-     * </pre>
-     */
-    NAME_STATUS("--name-status"),
-    RAW("--raw");
-
-    private final String value;
-
-    DiffType(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
+@DTO
+public interface TagListRequest extends GitRequest {
+    /** @return tag's names pattern */
+    String getPattern();
+    
+    void setPattern(String pattern);
 }

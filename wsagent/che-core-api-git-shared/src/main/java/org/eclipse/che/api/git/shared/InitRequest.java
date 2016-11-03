@@ -10,27 +10,28 @@
  *******************************************************************************/
 package org.eclipse.che.api.git.shared;
 
+import org.eclipse.che.dto.shared.DTO;
+
+
+
 /**
- * Branch list modes.
+ * Request to init git repository.
  *
- * @author Igor Vinokur
+ * @author andrew00x
  */
-public enum BranchListMode {
-    /**
-     * Show both remote and local branches. <br/>
-     * Corresponds to -a option in console git.
-     */
-    LIST_ALL,
+@DTO
+public interface InitRequest extends GitRequest {
+    /** @return working directory for new git repository */
+    String getWorkingDir();
 
-    /**
-     * Show only remote branches. <br/>
-     * Corresponds to -r option in console git.
-     */
-    LIST_REMOTE,
+    void setWorkingDir(String workingDir);
 
-    /**
-     * Show only local branches. <br/>
-     * Corresponds to -l or empty option in console git.
-     */
-    LIST_LOCAL
+    InitRequest withWorkingDir(String workingDir);
+    
+    /** @return <code>true</code> then bare repository created */
+    boolean isBare();
+    
+    void setBare(boolean bare);
+    
+    InitRequest withBare(boolean bare);
 }

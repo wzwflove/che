@@ -13,29 +13,14 @@ package org.eclipse.che.api.git.shared;
 import org.eclipse.che.dto.shared.DTO;
 
 /**
- * Request to create new tag.
+ * Request to delete named tag.
  *
  * @author andrew00x
  */
 @DTO
-public interface TagCreateRequest extends GitRequest {
-    /** @return name of tag to create */
+public interface TagDeleteRequest extends GitRequest {
+    /** @return name of tag to delete */
     String getName();
     
     void setName(String name);
-
-    /** @return commit to make tag. If <code>null</code> then HEAD is used */
-    String getCommit();
-    
-    void setCommit(String commit);
-
-    /** @return message for tag */
-    String getMessage();
-    
-    void setMessage(String message);
-
-    /** @return force create tag operation */
-    boolean isForce();
-    
-    void setForce(boolean isForce);
 }
