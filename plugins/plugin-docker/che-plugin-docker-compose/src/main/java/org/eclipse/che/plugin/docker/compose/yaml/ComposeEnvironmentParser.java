@@ -33,7 +33,6 @@ import static java.lang.String.format;
 
 /**
  * Converters compose EnvironmentRecipe to {@link CheServicesEnvironmentImpl}.
- * Converters compose file to {@link ComposeEnvironment} and vise versa.
  *
  * @author Alexander Garagatyi
  */
@@ -49,7 +48,7 @@ public class ComposeEnvironmentParser implements EnvironmentRecipeParser {
     private static final ObjectMapper YAML_PARSER = new ObjectMapper(new YAMLFactory());
 
     /**
-     * Parses compose file into Docker Compose model.
+     * Parses compose file into {@link CheServicesEnvironmentImpl}.
      *
      * @param recipe
      *         recipe with content to parse. Content contains environment definition.
