@@ -23,7 +23,6 @@ import org.eclipse.che.plugin.docker.machine.DockerInstance;
 import org.eclipse.che.plugin.docker.machine.DockerInstanceRuntimeInfo;
 import org.eclipse.che.plugin.docker.machine.DockerProcess;
 import org.eclipse.che.plugin.docker.machine.node.DockerNode;
-import org.eclipse.che.plugin.docker.compose.ComposeModule;
 
 import java.util.Set;
 
@@ -65,7 +64,6 @@ public class LocalDockerModule extends AbstractModule {
                          .toProvider(org.eclipse.che.plugin.docker.machine.local.provider.DockerApiHostEnvVariableProvider.class);
 
         install(new org.eclipse.che.plugin.docker.machine.DockerMachineModule());
-        install(new ComposeModule());
 
         Multibinder<String> devMachineVolumes = Multibinder.newSetBinder(binder(),
                                                                          String.class,
