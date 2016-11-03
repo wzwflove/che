@@ -13,13 +13,20 @@ package org.eclipse.che.plugin.docker.compose.yaml;
 import com.google.common.collect.ImmutableMap;
 
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.plugin.docker.compose.ComposeEnvironment;
+import org.eclipse.che.api.core.model.workspace.EnvironmentRecipe;
+import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
+import org.eclipse.che.api.machine.server.util.RecipeDownloader;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.util.Map;
 
 import static java.lang.String.format;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
@@ -27,17 +34,26 @@ import static org.testng.Assert.fail;
 /**
  * @author Dmytro Nochevnov
  */
+@Listeners(MockitoTestNGListener.class)
 public class EnvironmentContextTest {
 
-    ComposeFileParser parser = new ComposeFileParser();
+    @Mock
+    private RecipeDownloader  recipeDownloader;
+    @Mock
+    private EnvironmentRecipe recipe;
+
+    @InjectMocks
+    private ComposeEnvironmentParser parser;
 
     @Test(dataProvider = "correctContentTestData")
     public void testCorrectContentParsing(String content, Map<String, String> expected) throws ServerException {
         // when
-        ComposeEnvironment composeEnvironment = parser.parse(content, "application/x-yaml");
+        setUpRecipe(content);
+
+        CheServicesEnvironmentImpl cheServicesEnvironment = parser.parse(recipe);
 
         // then
-        assertEquals(composeEnvironment.getServices().get("dev-machine").getEnvironment(), expected);
+        assertEquals(cheServicesEnvironment.getServices().get("dev-machine").getEnvironment(), expected);
     }
 
     @DataProvider
@@ -113,8 +129,10 @@ public class EnvironmentContextTest {
 
     @Test(dataProvider = "incorrectContentTestData")
     public void shouldThrowError(String content, String errorPattern) throws ServerException {
+        setUpRecipe(content);
+
         try {
-            parser.parse(content, "application/x-yaml");
+            parser.parse(recipe);
         } catch (IllegalArgumentException e) {
             assertTrue(e.getMessage().matches(errorPattern),
                        format("Actual error message \"%s\" doesn't match regex \"%s\" for content \"%s\"",
@@ -178,5 +196,8 @@ public class EnvironmentContextTest {
         };
     }
 
-
+    private void setUpRecipe(String content) {
+        when(recipe.getContent()).thenReturn(content);
+        when(recipe.getContentType()).thenReturn("application/x-yaml");
+    }
 }

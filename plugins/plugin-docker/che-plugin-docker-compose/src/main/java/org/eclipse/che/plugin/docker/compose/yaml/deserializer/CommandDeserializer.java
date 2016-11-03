@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
 import org.eclipse.che.plugin.docker.compose.ComposeServiceImpl;
-import org.eclipse.che.plugin.docker.compose.yaml.ComposeFileParser;
+import org.eclipse.che.plugin.docker.compose.yaml.ComposeEnvironmentParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ import static java.util.Arrays.asList;
  *
  *
  * See more for parsing compose file
- * {@link ComposeFileParser}.
+ * {@link ComposeEnvironmentParser}.
  * <p>Note: this deserializer works for json too.</p>
  *
  * @author Alexander Andrienko

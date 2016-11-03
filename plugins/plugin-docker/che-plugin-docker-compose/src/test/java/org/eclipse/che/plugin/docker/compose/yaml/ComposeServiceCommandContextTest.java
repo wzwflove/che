@@ -12,9 +12,12 @@ package org.eclipse.che.plugin.docker.compose.yaml;
 
 import com.fasterxml.jackson.dataformat.yaml.snakeyaml.reader.ReaderException;
 
-import org.eclipse.che.plugin.docker.compose.ComposeEnvironment;
+import org.eclipse.che.api.core.model.workspace.EnvironmentRecipe;
+import org.eclipse.che.api.environment.server.model.CheServiceImpl;
+import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
 import org.eclipse.che.plugin.docker.compose.ComposeServiceImpl;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
@@ -26,6 +29,7 @@ import java.util.Map;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -37,8 +41,11 @@ import static org.testng.Assert.assertTrue;
 @Listeners(MockitoTestNGListener.class)
 public class ComposeServiceCommandContextTest {
 
+    @Mock
+    private EnvironmentRecipe recipe;
+
     @InjectMocks
-    private ComposeFileParser composeFileParser;
+    private ComposeEnvironmentParser composeEnvironmentParser;
 
     private static final String RECIPE_WITHOUT_COMMAND_VALUE = "services:\n" +
                                                                " machine1:\n" +
@@ -54,11 +61,12 @@ public class ComposeServiceCommandContextTest {
     public void composeServiceCommandShouldBeParsedSuccessfully(String command,
                                                                 List<String> commandWords,
                                                                 int commandNumberOfWords) throws Exception {
-        String recipe = format(RECIPE_WITHOUT_COMMAND_VALUE, command);
-        ComposeEnvironment composeEnvironment = composeFileParser.parse(recipe, "text/x-yaml");
+        setUpRecipe(command);
 
-        assertEquals(composeEnvironment.getServices().size(), 1);
-        ComposeServiceImpl service = composeEnvironment.getServices().get("machine1");
+        CheServicesEnvironmentImpl cheServicesEnvironment = composeEnvironmentParser.parse(recipe);
+
+        assertEquals(cheServicesEnvironment.getServices().size(), 1);
+        CheServiceImpl service = cheServicesEnvironment.getServices().get("machine1");
         assertEquals(service.getImage(), "codenvy/mysql");
         assertEquals(service.getMemLimit().longValue(), 2147483648L);
         Map<String, String> environment = service.getEnvironment();
@@ -142,9 +150,10 @@ public class ComposeServiceCommandContextTest {
     @Test(expectedExceptions = IllegalArgumentException.class,
           dataProvider = "inValidCommand")
     public void composeServiceCommandShouldBeParsedFailed(String command) throws Exception {
-        String recipe = format(RECIPE_WITHOUT_COMMAND_VALUE, command);
+        setUpRecipe(command);
+
         try {
-            composeFileParser.parse(recipe, "text/x-yaml");
+            composeEnvironmentParser.parse(recipe);
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
             throw e;
@@ -175,11 +184,14 @@ public class ComposeServiceCommandContextTest {
         };
     }
 
-    @Test(expectedExceptions = ReaderException.class, expectedExceptionsMessageRegExp = "special characters are not allowed", dataProvider = "inValidSymbols")
+    @Test(expectedExceptions = ReaderException.class,
+          expectedExceptionsMessageRegExp = "special characters are not allowed",
+          dataProvider = "inValidSymbols")
     public void symbolsShouldBeInvalidForYaml(String command) throws Exception {
-        String recipe = format(RECIPE_WITHOUT_COMMAND_VALUE, command);
+        setUpRecipe(command);
+
         try {
-            composeFileParser.parse(recipe, "text/x-yaml");
+            composeEnvironmentParser.parse(recipe);
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
             throw e;
@@ -207,5 +219,12 @@ public class ComposeServiceCommandContextTest {
             {"service mysql start\u000B"},
             {"service mysql start\u0008"},
         };
+    }
+
+    private void setUpRecipe(String command) {
+        when(recipe.getContentType()).thenReturn("text/x-yaml");
+
+        String content = format(RECIPE_WITHOUT_COMMAND_VALUE, command);
+        when(recipe.getContent()).thenReturn(content);
     }
 }

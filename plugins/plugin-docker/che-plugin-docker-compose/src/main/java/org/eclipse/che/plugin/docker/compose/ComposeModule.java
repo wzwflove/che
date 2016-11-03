@@ -12,9 +12,9 @@ package org.eclipse.che.plugin.docker.compose;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.MapBinder;
-import com.google.inject.name.Names;
 
-import org.eclipse.che.plugin.docker.compose.yaml.ComposeFileParser;
+import org.eclipse.che.api.environment.server.EnvironmentRecipeParser;
+import org.eclipse.che.plugin.docker.compose.yaml.ComposeEnvironmentParser;
 
 /**
  * @author Alexander Andrienko
@@ -22,10 +22,9 @@ import org.eclipse.che.plugin.docker.compose.yaml.ComposeFileParser;
 public class ComposeModule extends AbstractModule {
     @Override
     protected void configure() {
-        MapBinder<String, EnvironmentFileParser> mapBinder = MapBinder.newMapBinder(binder(),
-                                                                                    String.class,
-                                                                                    EnvironmentFileParser.class,
-                                                                                    Names.named("machine.docker.compose.parsers"));
-        mapBinder.addBinding("compose").toInstance(new ComposeFileParser());
+        MapBinder<String, EnvironmentRecipeParser> mapBinder = MapBinder.newMapBinder(binder(),
+                                                                                      String.class,
+                                                                                      EnvironmentRecipeParser.class);
+        mapBinder.addBinding("compose").to(ComposeEnvironmentParser.class);
     }
 }

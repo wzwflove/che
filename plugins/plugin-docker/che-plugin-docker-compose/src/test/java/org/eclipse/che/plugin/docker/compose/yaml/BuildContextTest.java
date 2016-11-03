@@ -11,63 +11,78 @@
 package org.eclipse.che.plugin.docker.compose.yaml;
 
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.plugin.docker.compose.ComposeEnvironment;
+import org.eclipse.che.api.core.model.workspace.EnvironmentRecipe;
+import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.testng.MockitoTestNGListener;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 /**
  * @author Mario Loriedo
  */
+@Listeners(MockitoTestNGListener.class)
 public class BuildContextTest {
 
-    ComposeFileParser parser = new ComposeFileParser();
+    @Mock
+    private EnvironmentRecipe recipe;
+
+    @InjectMocks
+    private ComposeEnvironmentParser parser;
 
     @Test
     public void shouldParseBuildArgsWhenProvided() throws ServerException {
         // given
         String recipeContent = "services:\n" +
-                " dev-machine:\n" +
-                "  build:\n" +
-                "   context: .\n" +
-                "   args:\n" +
-                "    buildno: 1\n" +
-                "    password: secret\n";
-        String recipeContentType = "application/x-yaml";
+                               " dev-machine:\n" +
+                               "  build:\n" +
+                               "   context: .\n" +
+                               "   args:\n" +
+                               "    buildno: 1\n" +
+                               "    password: secret\n";
+        setUpRecipe(recipeContent);
 
-        Map<String,String> expected = new HashMap<String, String>() {
+        Map<String, String> expected = new HashMap<String, String>() {
             {
-                put("buildno","1");
-                put("password","secret");
+                put("buildno", "1");
+                put("password", "secret");
             }
         };
 
         // when
-        ComposeEnvironment composeEnvironment = parser.parse(recipeContent, recipeContentType);
+        CheServicesEnvironmentImpl cheServicesEnvironment = parser.parse(recipe);
 
 
         // then
-        assertEquals(composeEnvironment.getServices().get("dev-machine").getBuild().getArgs(), expected);
+        assertEquals(cheServicesEnvironment.getServices().get("dev-machine").getBuild().getArgs(), expected);
     }
 
     @Test
     public void shouldNotParseBuildArgsWhenNotProvided() throws ServerException {
         // given
         String recipeContent = "services:\n" +
-                " dev-machine:\n" +
-                "  build:\n" +
-                "   context: .\n";
-        String recipeContentType = "application/x-yaml";
+                               " dev-machine:\n" +
+                               "  build:\n" +
+                               "   context: .\n";
+        setUpRecipe(recipeContent);
 
         // when
-        ComposeEnvironment composeEnvironment = parser.parse(recipeContent, recipeContentType);
+        CheServicesEnvironmentImpl cheServicesEnvironment = parser.parse(recipe);
 
         // then
-        assertEquals(Collections.emptyMap(), composeEnvironment.getServices().get("dev-machine").getBuild().getArgs());
+        assertEquals(Collections.emptyMap(), cheServicesEnvironment.getServices().get("dev-machine").getBuild().getArgs());
     }
 
+    private void setUpRecipe(String content) {
+        when(recipe.getContent()).thenReturn(content);
+        when(recipe.getContentType()).thenReturn("application/x-yaml");
+    }
 }

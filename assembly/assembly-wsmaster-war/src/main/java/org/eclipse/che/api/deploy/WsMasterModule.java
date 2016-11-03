@@ -34,6 +34,7 @@ import org.eclipse.che.api.user.server.jpa.UserJpaModule;
 import org.eclipse.che.api.workspace.server.jpa.WorkspaceJpaModule;
 import org.eclipse.che.api.workspace.server.stack.StackMessageBodyAdapter;
 import org.eclipse.che.inject.DynaModule;
+import org.eclipse.che.plugin.docker.compose.ComposeModule;
 
 import static com.google.inject.matcher.Matchers.subclassesOf;
 import static org.eclipse.che.inject.Matchers.names;
@@ -53,6 +54,7 @@ public class WsMasterModule extends AbstractModule {
         install(new WorkspaceJpaModule());
         install(new AccountModule());
         install(new MachineJpaModule());
+        install(new ComposeModule());
         bind(TokenValidator.class).to(org.eclipse.che.api.local.DummyTokenValidator.class);
         bind(org.eclipse.che.api.local.LocalDataMigrator.class).asEagerSingleton();
 
