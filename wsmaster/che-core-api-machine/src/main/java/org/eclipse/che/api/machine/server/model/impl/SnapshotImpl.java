@@ -52,7 +52,7 @@ import java.util.Objects;
                                     "  AND snapshot.envName = :envName")
         }
 )
-@Table(indexes = @Index(columnList = "workspaceId, envName, machineName", unique = true))
+@Table(name = "snapshot")
 public class SnapshotImpl implements Snapshot {
 
     public static SnapshotBuilder builder() {
@@ -60,27 +60,28 @@ public class SnapshotImpl implements Snapshot {
     }
 
     @Id
+    @Column(name = "id")
     private String id;
 
-    @Column(nullable = false)
+    @Column(name = "workspaceid", nullable = false)
     private String workspaceId;
 
-    @Column(nullable = false)
+    @Column(name = "machinename", nullable = false)
     private String machineName;
 
-    @Column(nullable = false)
+    @Column(name = "envname", nullable = false)
     private String envName;
 
-    @Basic
+    @Column(name = "type")
     private String type;
 
-    @Basic
+    @Column(name = "isdev")
     private boolean isDev;
 
-    @Basic
+    @Column(name = "creationdate")
     private long creationDate;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Embedded

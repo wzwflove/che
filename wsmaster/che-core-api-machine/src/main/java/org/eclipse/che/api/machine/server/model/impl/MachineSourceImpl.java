@@ -30,10 +30,10 @@ public class MachineSourceImpl implements MachineSource {
     @Column(name = "source_type")
     private String type;
 
-    @Basic
+    @Column(name = "location")
     private String location;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
     public MachineSourceImpl() {}
