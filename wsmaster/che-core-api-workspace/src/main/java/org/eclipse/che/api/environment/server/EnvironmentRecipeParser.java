@@ -23,7 +23,7 @@ import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
 public interface EnvironmentRecipeParser {
     /**
      * Returns {@link CheServicesEnvironmentImpl} with parameters parsed
-     * from from {@link EnvironmentRecipe} content.
+     * from {@link EnvironmentRecipe} content.
      *
      * @param environmentRecipe
      *         recipe with environment definition
