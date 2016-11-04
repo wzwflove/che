@@ -14,7 +14,6 @@ import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.persist.jpa.JpaPersistModule;
 
-import org.eclipse.che.core.db.jpa.eclipselink.EntityListenerInjectionManagerInitializer;
 import org.eclipse.che.core.db.jpa.JpaInitializer;
 import org.eclipse.che.api.factory.server.model.impl.FactoryImpl;
 import org.eclipse.che.api.factory.server.spi.FactoryDao;
@@ -41,7 +40,7 @@ public class JpaTckModule extends TckModule {
     protected void configure() {
         install(new JpaPersistModule("main"));
         bind(JpaInitializer.class).asEagerSingleton();
-        bind(EntityListenerInjectionManagerInitializer.class).asEagerSingleton();
+//        bind(EntityListenerInjectionManagerInitializer.class).asEagerSingleton();
         bind(TckResourcesCleaner.class).to(JpaCleaner.class);
 
         bind(new TypeLiteral<TckRepository<UserImpl>>() {}).toInstance(new JpaTckRepository<>(UserImpl.class));
