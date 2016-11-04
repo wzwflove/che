@@ -11,11 +11,16 @@
 package org.eclipse.che.api.machine.server.jpa;
 
 import org.eclipse.che.api.core.model.workspace.Workspace;
+import org.eclipse.che.api.core.model.workspace.WorkspaceConfig;
+import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
+import org.eclipse.che.api.core.model.workspace.WorkspaceStatus;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -26,7 +31,7 @@ import java.util.Objects;
  */
 @Entity(name = "Workspace")
 @Table(name = "workspace")
-public class TestWorkspaceEntity {
+public class TestWorkspaceEntity implements Workspace {
 
     @Id
     @Column(name = "id")
@@ -44,6 +49,36 @@ public class TestWorkspaceEntity {
 
     public String getId() {
         return id;
+    }
+
+    @Override
+    public String getNamespace() {
+        return "placeholder";
+    }
+
+    @Override
+    public WorkspaceStatus getStatus() {
+        return WorkspaceStatus.STOPPED;
+    }
+
+    @Override
+    public Map<String, String> getAttributes() {
+        return Collections.emptyMap();
+    }
+
+    @Override
+    public boolean isTemporary() {
+        return false;
+    }
+
+    @Override
+    public WorkspaceConfig getConfig() {
+        return null;
+    }
+
+    @Override
+    public WorkspaceRuntime getRuntime() {
+        return null;
     }
 
     @Override

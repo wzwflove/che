@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 
 import org.eclipse.che.account.spi.AccountImpl;
 import org.eclipse.che.api.core.NotFoundException;
+import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.machine.server.exception.SnapshotException;
 import org.eclipse.che.api.machine.server.jpa.TestWorkspaceEntity;
 import org.eclipse.che.api.machine.server.model.impl.MachineSourceImpl;
@@ -60,7 +61,7 @@ public class SnapshotDaoTest {
     private TckRepository<SnapshotImpl> snaphotRepo;
 
     @Inject
-    private TckRepository<TestWorkspaceEntity> workspacesRepo;
+    private TckRepository<Workspace> workspacesRepo;
 
     @Inject
     private TckRepository<AccountImpl> accountRepo;

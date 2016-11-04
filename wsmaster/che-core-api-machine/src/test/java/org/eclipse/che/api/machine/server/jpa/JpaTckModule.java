@@ -14,6 +14,7 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.persist.jpa.JpaPersistModule;
 
 import org.eclipse.che.account.spi.AccountImpl;
+import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.machine.server.model.impl.SnapshotImpl;
 import org.eclipse.che.api.machine.server.recipe.RecipeImpl;
 import org.eclipse.che.api.machine.server.spi.RecipeDao;
@@ -41,7 +42,7 @@ public class JpaTckModule extends TckModule {
 
         bind(new TypeLiteral<TckRepository<RecipeImpl>>() {}).toInstance(new JpaTckRepository<>(RecipeImpl.class));
         bind(new TypeLiteral<TckRepository<SnapshotImpl>>() {}).toInstance(new JpaTckRepository<>(SnapshotImpl.class));
-        bind(new TypeLiteral<TckRepository<TestWorkspaceEntity>>() {}).toInstance(new JpaTckRepository<>(TestWorkspaceEntity.class));
+        bind(new TypeLiteral<TckRepository<Workspace>>() {}).toInstance(new JpaTckRepository<>(TestWorkspaceEntity.class));
         bind(new TypeLiteral<TckRepository<AccountImpl>>() {}).toInstance(new JpaTckRepository<>(AccountImpl.class));
 
         bind(RecipeDao.class).to(JpaRecipeDao.class);
