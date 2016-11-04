@@ -19,6 +19,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -29,6 +30,7 @@ import java.util.Objects;
  * @author Yevhenii Voevodin
  */
 @Entity(name = "SourceStorage")
+@Table(name = "sourcestorage")
 public class SourceStorageImpl implements SourceStorage {
 
     @Id
