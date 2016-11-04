@@ -25,8 +25,12 @@ import org.eclipse.che.commons.test.tck.TckModule;
 import org.eclipse.che.commons.test.tck.TckResourcesCleaner;
 import org.eclipse.che.commons.test.tck.repository.JpaTckRepository;
 import org.eclipse.che.commons.test.tck.repository.TckRepository;
+import org.eclipse.che.commons.test.tck.repository.TckRepositoryException;
 import org.eclipse.che.core.db.DBInitializer;
 import org.eclipse.che.core.db.schema.SchemaInitializer;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @author Anton Korneta
@@ -42,10 +46,22 @@ public class JpaTckModule extends TckModule {
 
         bind(new TypeLiteral<TckRepository<RecipeImpl>>() {}).toInstance(new JpaTckRepository<>(RecipeImpl.class));
         bind(new TypeLiteral<TckRepository<SnapshotImpl>>() {}).toInstance(new JpaTckRepository<>(SnapshotImpl.class));
-        bind(new TypeLiteral<TckRepository<Workspace>>() {}).toInstance(new JpaTckRepository<>(TestWorkspaceEntity.class));
+        bind(new TypeLiteral<TckRepository<Workspace>>() {}).toInstance(new TestWorkspacesTckRepository());
         bind(new TypeLiteral<TckRepository<AccountImpl>>() {}).toInstance(new JpaTckRepository<>(AccountImpl.class));
 
         bind(RecipeDao.class).to(JpaRecipeDao.class);
         bind(SnapshotDao.class).to(JpaSnapshotDao.class);
+    }
+
+    private static class TestWorkspacesTckRepository extends JpaTckRepository<Workspace> {
+
+        public TestWorkspacesTckRepository() { super(TestWorkspaceEntity.class); }
+
+        @Override
+        public void createAll(Collection<? extends Workspace> entities) throws TckRepositoryException {
+            super.createAll(entities.stream()
+                                    .map(TestWorkspaceEntity::new)
+                                    .collect(Collectors.toList()));
+        }
     }
 }

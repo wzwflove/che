@@ -14,7 +14,6 @@ import org.eclipse.che.account.spi.AccountImpl;
 import org.eclipse.che.api.core.model.user.User;
 import org.eclipse.che.api.user.server.jpa.UserEntityListener;
 
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;

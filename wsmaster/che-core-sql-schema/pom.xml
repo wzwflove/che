@@ -19,4 +19,5 @@
         <version>5.0.0-M7-SNAPSHOT</version>
     </parent>
     <artifactId>che-core-sql-schema</artifactId>
+    <name>Che Core :: SQL :: Schema</name>
 </project>

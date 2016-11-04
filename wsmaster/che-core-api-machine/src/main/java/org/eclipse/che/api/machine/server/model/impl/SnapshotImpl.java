@@ -16,12 +16,10 @@ import org.eclipse.che.api.core.model.machine.Snapshot;
 import org.eclipse.che.api.machine.server.spi.Instance;
 import org.eclipse.che.commons.lang.NameGenerator;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;

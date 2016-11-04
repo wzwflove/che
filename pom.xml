@@ -42,8 +42,8 @@
     <properties>
         <che.lib.version>5.0.0-M7-SNAPSHOT</che.lib.version>
         <che.version>5.0.0-M7-SNAPSHOT</che.version>
-        <specification.version>1.0-beta2</specification.version>
         <org.flyway.version>4.0.3</org.flyway.version>
+        <specification.version>1.0-beta2</specification.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -52,11 +52,6 @@
                 <artifactId>assembly-ide-war</artifactId>
                 <version>${che.version}</version>
                 <type>war</type>
-            </dependency>
-            <dependency>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-core</artifactId>
-                <version>${org.flyway.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che</groupId>
@@ -89,11 +84,6 @@
             <dependency>
                 <groupId>org.eclipse.che.core</groupId>
                 <artifactId>che-core-api-account</artifactId>
-                <version>${che.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.che.core</groupId>
-                <artifactId>che-core-sql-schema</artifactId>
                 <version>${che.version}</version>
             </dependency>
             <dependency>
@@ -178,16 +168,6 @@
                 <groupId>org.eclipse.che.core</groupId>
                 <artifactId>che-core-api-infrastructure-local</artifactId>
                 <version>${che.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.che.core</groupId>
-                <artifactId>che-core-db</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.che.core</groupId>
-                <artifactId>che-core-db-vendor-h2</artifactId>
-                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.core</groupId>
@@ -325,6 +305,16 @@
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.core</groupId>
+                <artifactId>che-core-db</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.core</groupId>
+                <artifactId>che-core-db-vendor-h2</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.core</groupId>
                 <artifactId>che-core-git-impl-jgit</artifactId>
                 <version>${che.version}</version>
             </dependency>
@@ -356,6 +346,11 @@
             <dependency>
                 <groupId>org.eclipse.che.core</groupId>
                 <artifactId>che-core-ide-ui</artifactId>
+                <version>${che.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.core</groupId>
+                <artifactId>che-core-sql-schema</artifactId>
                 <version>${che.version}</version>
             </dependency>
             <dependency>
@@ -857,6 +852,11 @@
                 <groupId>org.eclipse.che.sample</groupId>
                 <artifactId>che-sample-plugin-wizard-shared</artifactId>
                 <version>${che.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>${org.flyway.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.core</groupId>

@@ -24,8 +24,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Default implementation of {@link Workspace}
- * can't be used due to circular dependency.
+ * Test implementation of {@link Workspace},
+ * default one can't be used due to circular dependency.
  *
  * @author Yevhenii Voevodin
  */
@@ -41,6 +41,10 @@ public class TestWorkspaceEntity implements Workspace {
     private String accountId;
 
     public TestWorkspaceEntity() {}
+
+    public TestWorkspaceEntity(Workspace workspace) {
+        this(workspace.getId(), workspace.getNamespace());
+    }
 
     public TestWorkspaceEntity(String id, String accountId) {
         this.id = id;
