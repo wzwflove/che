@@ -165,6 +165,8 @@ public class JpaWorkspaceDao implements WorkspaceDao {
         if (workspace != null) {
             manager.get().remove(workspace);
         }
+        System.out.println(workspace.getConfig().getName());
+        manager.get().flush();
         eventService.publish(new WorkspaceRemovedEvent(workspace));
     }
 

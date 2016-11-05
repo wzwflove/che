@@ -21,6 +21,8 @@ import org.eclipse.che.api.machine.server.recipe.RecipeImpl;
 import org.eclipse.che.api.ssh.server.model.impl.SshPairImpl;
 import org.eclipse.che.api.user.server.model.impl.ProfileImpl;
 import org.eclipse.che.api.user.server.model.impl.UserImpl;
+import org.eclipse.che.api.workspace.server.model.impl.ProjectConfigImpl;
+import org.eclipse.che.api.workspace.server.model.impl.SourceStorageImpl;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceImpl;
 import org.eclipse.che.api.workspace.server.model.impl.stack.StackComponentImpl;
@@ -28,6 +30,7 @@ import org.eclipse.che.api.workspace.server.model.impl.stack.StackImpl;
 import org.eclipse.che.api.workspace.server.model.impl.stack.StackSourceImpl;
 import org.eclipse.che.api.workspace.server.stack.image.StackIcon;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,8 +68,27 @@ public final class TestObjectsFactory {
                                        id + "description",
                                        "default-env",
                                        null,
-                                       null,
+                                       asList(createProjectConfig(id + "-project1"),
+                                              createProjectConfig(id + "-project2")),
                                        null);
+    }
+
+    public static ProjectConfigImpl createProjectConfig(String name) {
+        final ProjectConfigImpl project = new ProjectConfigImpl();
+        project.setDescription(name + "-description");
+        project.setName(name);
+        project.setPath("/" + name);
+        project.setType(name + "type");
+        project.setSource(new SourceStorageImpl("source-type",
+                                                "source-location",
+                                                ImmutableMap.of("param1", "value",
+                                                                "param2", "value")));
+        project.setMixins(asList("mixin1", "mixin2"));
+        project.getAttributes().put("attribute1", Collections.singletonList("value1"));
+//
+        project.getAttributes().put("attribute2", Collections.singletonList("value2"));
+        project.getAttributes().put("attribute3", Collections.singletonList("value3"));
+        return project;
     }
 
     public static WorkspaceImpl createWorkspace(String id, Account account) {

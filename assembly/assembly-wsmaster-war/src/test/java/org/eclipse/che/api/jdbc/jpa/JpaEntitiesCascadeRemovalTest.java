@@ -240,8 +240,8 @@ public class JpaEntitiesCascadeRemovalTest {
         sshDao.create(sshPair1 = createSshPair(user.getId(), "service", "name1"));
         sshDao.create(sshPair2 = createSshPair(user.getId(), "service", "name2"));
 
-        factoryDao.create(factory1 = createFactory("factory1", user.getId()));
-        factoryDao.create(factory2 = createFactory("factory2", user.getId()));
+//        factoryDao.create(factory1 = createFactory("factory1", user.getId()));
+//        factoryDao.create(factory2 = createFactory("factory2", user.getId()));
 
         snapshotDao.saveSnapshot(snapshot1 = createSnapshot("snapshot1", workspace1.getId()));
         snapshotDao.saveSnapshot(snapshot2 = createSnapshot("snapshot2", workspace1.getId()));
@@ -255,8 +255,8 @@ public class JpaEntitiesCascadeRemovalTest {
         snapshotDao.removeSnapshot(snapshot3.getId());
         snapshotDao.removeSnapshot(snapshot4.getId());
 
-        factoryDao.remove(factory1.getId());
-        factoryDao.remove(factory2.getId());
+//        factoryDao.remove(factory1.getId());
+//        factoryDao.remove(factory2.getId());
 
         sshDao.remove(sshPair1.getOwner(), sshPair1.getService(), sshPair1.getName());
         sshDao.remove(sshPair2.getOwner(), sshPair2.getService(), sshPair2.getName());
