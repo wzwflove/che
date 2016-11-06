@@ -32,11 +32,15 @@ import java.util.Map;
 import static java.lang.String.format;
 
 /**
- * Converters compose EnvironmentRecipe to {@link CheServicesEnvironmentImpl}.
+ * Converters compose file to {@link ComposeEnvironment} and vise versa or
+ * converters compose EnvironmentRecipe to {@link CheServicesEnvironmentImpl}.
  *
  * @author Alexander Garagatyi
+ * @author Alexander Andrienko
  */
 public class ComposeEnvironmentParser implements EnvironmentRecipeParser {
+
+    private static final ObjectMapper YAML_PARSER = new ObjectMapper(new YAMLFactory());
 
     private final RecipeDownloader recipeDownloader;
 
@@ -44,8 +48,6 @@ public class ComposeEnvironmentParser implements EnvironmentRecipeParser {
     public ComposeEnvironmentParser(RecipeDownloader recipeDownloader) {
         this.recipeDownloader = recipeDownloader;
     }
-
-    private static final ObjectMapper YAML_PARSER = new ObjectMapper(new YAMLFactory());
 
     /**
      * Parses compose file into {@link CheServicesEnvironmentImpl}.
@@ -59,16 +61,29 @@ public class ComposeEnvironmentParser implements EnvironmentRecipeParser {
      */
     @Override
     public CheServicesEnvironmentImpl parse(EnvironmentRecipe recipe) throws IllegalArgumentException, ServerException {
-        ComposeEnvironment composeEnvironment;
-
         String content = getContentOfRecipe(recipe);
-        String contentType = recipe.getContentType();
+        ComposeEnvironment composeEnvironment = parse(content, recipe.getContentType());
+        return asCheEnvironment(composeEnvironment);
+    }
+
+    /**
+     * Parses compose file into Docker Compose model.
+     *
+     * @param recipeContent compose file to parse
+     * @throws IllegalArgumentException
+     *         when environment or environment recipe is invalid
+     * @throws ServerException
+     *         when environment recipe can not be retrieved
+     */
+    public ComposeEnvironment parse(String recipeContent, String contentType) throws IllegalArgumentException,
+                                                                                         ServerException {
+        ComposeEnvironment composeEnvironment;
         switch (contentType) {
             case "application/x-yaml":
             case "text/yaml":
             case "text/x-yaml":
                 try {
-                    composeEnvironment = YAML_PARSER.readValue(content, ComposeEnvironment.class);
+                    composeEnvironment = YAML_PARSER.readValue(recipeContent, ComposeEnvironment.class);
                 } catch (IOException e) {
                     throw new IllegalArgumentException(
                             "Parsing of environment configuration failed. " + e.getLocalizedMessage());
@@ -79,7 +94,22 @@ public class ComposeEnvironmentParser implements EnvironmentRecipeParser {
                                                    contentType +
                                                    "' is unsupported. Supported values are: application/x-yaml, text/yaml, text/x-yaml");
         }
-        return asCheEnvironment(composeEnvironment);
+        return composeEnvironment;
+    }
+    /**
+     * Converts Docker Compose environment model into YAML file.
+     *
+     * @param composeEnvironment Docker Compose environment model file
+     * @throws IllegalArgumentException
+     *         when argument is null or conversion to YAML fails
+     */
+    public String toYaml(ComposeEnvironment composeEnvironment) throws IllegalArgumentException {
+        checkNotNull(composeEnvironment, "Compose environment should not be null");
+        try {
+            return YAML_PARSER.writeValueAsString(composeEnvironment);
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException(e.getLocalizedMessage(), e);
+        }
     }
 
     private String getContentOfRecipe(EnvironmentRecipe environmentRecipe) throws ServerException {
@@ -124,21 +154,6 @@ public class ComposeEnvironmentParser implements EnvironmentRecipeParser {
         return new CheServicesEnvironmentImpl().withServices(services);
     }
 
-    /**
-     * Converts Docker Compose environment model into YAML file.
-     *
-     * @param composeEnvironment Docker Compose environment model file
-     * @throws IllegalArgumentException
-     *         when argument is null or conversion to YAML fails
-     */
-    public String toYaml(ComposeEnvironment composeEnvironment) throws IllegalArgumentException {
-        checkNotNull(composeEnvironment, "Compose environment should not be null");
-        try {
-            return YAML_PARSER.writeValueAsString(composeEnvironment);
-        } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException(e.getLocalizedMessage(), e);
-        }
-    }
 
     /**
      * Checks that object reference is not null, throws {@link IllegalArgumentException} otherwise.

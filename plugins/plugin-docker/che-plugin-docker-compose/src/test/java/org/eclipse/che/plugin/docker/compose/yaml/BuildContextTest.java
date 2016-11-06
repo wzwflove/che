@@ -11,10 +11,8 @@
 package org.eclipse.che.plugin.docker.compose.yaml;
 
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.api.core.model.workspace.EnvironmentRecipe;
-import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
+import org.eclipse.che.plugin.docker.compose.ComposeEnvironment;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -23,7 +21,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -31,9 +28,6 @@ import static org.testng.Assert.assertEquals;
  */
 @Listeners(MockitoTestNGListener.class)
 public class BuildContextTest {
-
-    @Mock
-    private EnvironmentRecipe recipe;
 
     @InjectMocks
     private ComposeEnvironmentParser parser;
@@ -48,21 +42,20 @@ public class BuildContextTest {
                                "   args:\n" +
                                "    buildno: 1\n" +
                                "    password: secret\n";
-        setUpRecipe(recipeContent);
 
-        Map<String, String> expected = new HashMap<String, String>() {
+        Map<String,String> expected = new HashMap<String, String>() {
             {
-                put("buildno", "1");
-                put("password", "secret");
+                put("buildno","1");
+                put("password","secret");
             }
         };
 
         // when
-        CheServicesEnvironmentImpl cheServicesEnvironment = parser.parse(recipe);
+        ComposeEnvironment composeEnvironment = parser.parse(recipeContent, "application/x-yaml");
 
 
         // then
-        assertEquals(cheServicesEnvironment.getServices().get("dev-machine").getBuild().getArgs(), expected);
+        assertEquals(composeEnvironment.getServices().get("dev-machine").getBuild().getArgs(), expected);
     }
 
     @Test
@@ -72,17 +65,11 @@ public class BuildContextTest {
                                " dev-machine:\n" +
                                "  build:\n" +
                                "   context: .\n";
-        setUpRecipe(recipeContent);
 
         // when
-        CheServicesEnvironmentImpl cheServicesEnvironment = parser.parse(recipe);
+        ComposeEnvironment composeEnvironment = parser.parse(recipeContent, "application/x-yaml");
 
         // then
-        assertEquals(Collections.emptyMap(), cheServicesEnvironment.getServices().get("dev-machine").getBuild().getArgs());
-    }
-
-    private void setUpRecipe(String content) {
-        when(recipe.getContent()).thenReturn(content);
-        when(recipe.getContentType()).thenReturn("application/x-yaml");
+        assertEquals(Collections.emptyMap(), composeEnvironment.getServices().get("dev-machine").getBuild().getArgs());
     }
 }
