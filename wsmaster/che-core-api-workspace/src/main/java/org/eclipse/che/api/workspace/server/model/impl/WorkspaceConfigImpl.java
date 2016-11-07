@@ -24,6 +24,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -67,15 +68,16 @@ public class WorkspaceConfigImpl implements WorkspaceConfig {
     private String defaultEnv;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn
+    @JoinColumn(name = "commands_id")
     private List<CommandImpl> commands;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn
+    @JoinColumn(name = "projects_id")
     private List<ProjectConfigImpl> projects;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn
+    @JoinColumn(name = "environments_id")
+    @MapKeyColumn(name = "environments_key")
     private Map<String, EnvironmentImpl> environments;
 
     public WorkspaceConfigImpl() {}
