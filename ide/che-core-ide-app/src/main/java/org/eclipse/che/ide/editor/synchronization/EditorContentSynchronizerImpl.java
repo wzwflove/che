@@ -11,6 +11,7 @@
 package org.eclipse.che.ide.editor.synchronization;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -20,10 +21,17 @@ import org.eclipse.che.ide.api.event.ActivePartChangedEvent;
 import org.eclipse.che.ide.api.event.ActivePartChangedHandler;
 import org.eclipse.che.ide.api.parts.EditorPartStack;
 import org.eclipse.che.ide.api.parts.PartPresenter;
+import org.eclipse.che.ide.api.resources.ResourceChangedEvent;
+import org.eclipse.che.ide.api.resources.ResourceChangedEvent.ResourceChangedHandler;
+import org.eclipse.che.ide.api.resources.ResourceDelta;
 import org.eclipse.che.ide.resource.Path;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.eclipse.che.ide.api.resources.ResourceDelta.ADDED;
+import static org.eclipse.che.ide.api.resources.ResourceDelta.MOVED_FROM;
+import static org.eclipse.che.ide.api.resources.ResourceDelta.MOVED_TO;
 
 
 /**
@@ -36,17 +44,19 @@ import java.util.Map;
  * @author Roman Nikitenko
  */
 @Singleton
-public class EditorContentSynchronizerImpl implements EditorContentSynchronizer, ActivePartChangedHandler {
+public class EditorContentSynchronizerImpl implements EditorContentSynchronizer, ActivePartChangedHandler,
+                                                      ResourceChangedHandler {
     private final Map<Path, EditorGroupSynchronization> editorGroups;
-    private final EditorGroupSychronizationFactory editorGroupSychronizationFactory;
+    private final Provider<EditorGroupSynchronization>  editorGroupSyncProvider;
 
 
     @Inject
     public EditorContentSynchronizerImpl(EventBus eventBus,
-                                         EditorGroupSychronizationFactory editorGroupSychronizationFactory) {
-        this.editorGroupSychronizationFactory = editorGroupSychronizationFactory;
+                                         Provider<EditorGroupSynchronization> editorGroupSyncProvider) {
+        this.editorGroupSyncProvider = editorGroupSyncProvider;
         this.editorGroups = new HashMap<>();
         eventBus.addHandler(ActivePartChangedEvent.TYPE, this);
+        eventBus.addHandler(ResourceChangedEvent.getType(), this);
     }
 
     /**
@@ -61,7 +71,7 @@ public class EditorContentSynchronizerImpl implements EditorContentSynchronizer,
         if (editorGroups.containsKey(path)) {
             editorGroups.get(path).addEditor(editor);
         } else {
-            EditorGroupSynchronization group = editorGroupSychronizationFactory.create();
+            EditorGroupSynchronization group = editorGroupSyncProvider.get();
             editorGroups.put(path, group);
             group.addEditor(editor);
         }
@@ -99,6 +109,25 @@ public class EditorContentSynchronizerImpl implements EditorContentSynchronizer,
         Path path = activeEditor.getEditorInput().getFile().getLocation();
         if (editorGroups.containsKey(path)) {
             editorGroups.get(path).onActiveEditorChanged(activeEditor);
+        }
+    }
+
+    @Override
+    public void onResourceChanged(ResourceChangedEvent event) {
+        final ResourceDelta delta = event.getDelta();
+        if (delta.getKind() == ADDED) {
+            if (!delta.getResource().isFile() || (delta.getFlags() & (MOVED_FROM | MOVED_TO)) == 0) {
+                return;
+            }
+
+            final Path fromPath = delta.getFromPath();
+            final Path toPath = delta.getToPath();
+            final EditorGroupSynchronization group = editorGroups.remove(fromPath);
+            if (group == null) {
+                return;
+            }
+
+            editorGroups.put(toPath, group);
         }
     }
 }

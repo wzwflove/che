@@ -47,8 +47,6 @@ public class EditorContentSynchronizerImplTest {
     private EventBus                         eventBus;
     @Mock
     private EditorAgent                      editorAgent;
-    @Mock
-    private EditorGroupSychronizationFactory editorGroupSychronizationFactory;
 
     //additional mocks
     @Mock
@@ -71,7 +69,7 @@ public class EditorContentSynchronizerImplTest {
         when(editorInput.getFile()).thenReturn(virtualFile);
         when(virtualFile.getLocation()).thenReturn(new Path("somePath"));
         when(editorAgent.getActiveEditor()).thenReturn(activeEditor);
-        when(editorGroupSychronizationFactory.create()).thenReturn(editorGroupSynchronization);
+//        when(editorGroupSychronizationFactory.create()).thenReturn(editorGroupSynchronization);
     }
 
     @Test
@@ -89,7 +87,7 @@ public class EditorContentSynchronizerImplTest {
 
         editorContentSynchronizer.trackEditor(activeEditor);
 
-        verify(editorGroupSychronizationFactory).create();
+//        verify(editorGroupSychronizationFactory).create();
     }
 
     @Test
@@ -105,11 +103,11 @@ public class EditorContentSynchronizerImplTest {
 
         editorContentSynchronizer.trackEditor(openedEditor1);
         editorContentSynchronizer.trackEditor(openedEditor2);
-        reset(editorGroupSychronizationFactory);
+//        reset(editorGroupSychronizationFactory);
 
         editorContentSynchronizer.trackEditor(activeEditor);
 
-        verify(editorGroupSychronizationFactory, never()).create();
+//        verify(editorGroupSychronizationFactory, never()).create();
         verify(editorGroupSynchronization).addEditor(activeEditor);
     }
 
@@ -127,7 +125,7 @@ public class EditorContentSynchronizerImplTest {
         editorContentSynchronizer.trackEditor(openedEditor1);
         editorContentSynchronizer.trackEditor(openedEditor2);
         editorContentSynchronizer.trackEditor(activeEditor);
-        reset(editorGroupSychronizationFactory);
+//        reset(editorGroupSychronizationFactory);
 
         editorContentSynchronizer.unTrackEditor(activeEditor);
 
